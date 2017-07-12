@@ -12,3 +12,8 @@ h1 {
 h2 {
   color:ForestGreen;
 }
+
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
