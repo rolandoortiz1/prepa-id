@@ -1,0 +1,14 @@
+h1 {
+ color: DarkGreen;
+ font-family: Big Caslon;
+ font-size: 70px;
+ line-height: 76px;
+ margin: 0;
+ position: relative;
+ text-align: center;
+ top: 20%;
+}
+
+h2 {
+  color:ForestGreen;
+}
