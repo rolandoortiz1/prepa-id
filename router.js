@@ -1,8 +1,9 @@
-const path = require("path"),
-	fs = require("fs"),
-	url = require("url"),
-	express = require("express"),
-	app = express();
+const path = require('path'),
+	fs = require('fs'),
+	url = require('url'),
+	express = require('express'),
+    session = require('express-session');
+	app = express(),
 
 // app.use(express.static(path.join(__dirname, "public"))); // Serve static files automatically.
 
@@ -17,7 +18,7 @@ const path = require("path"),
 exports.get = function(req, res) {
 	req.requrl = url.parse(req.url, true);
 	var path = req.requrl.pathname;
-	console.log("Getting " + __dirname + path);
+//	console.log("Getting " + __dirname + path);
 	if (/.(css)$/.test(path)) {
 		res.writeHead(200, {'Content-Type': 'text/css'});
 		fs.readFile(__dirname + path, 'utf8', function(err, data) {
@@ -26,7 +27,7 @@ exports.get = function(req, res) {
 			res.end();
 		});
 	}
-	else if (/.(png)$/.test(path) || /.(jpg)$/.test(path) || /.(jpeg)$/.test(path)) {
+	else if (/.(png)$/.test(path) || /.(PNG)$/.test(path) || /.(jpg)$/.test(path) || /.(jpeg)$/.test(path)) {
 		var img = fs.readFileSync(__dirname + path);
 		res.writeHead(200, {'Content-Type': 'image/gif'});
 		fs.readFile(__dirname + path, 'utf8', function(err, data) {
@@ -38,17 +39,35 @@ exports.get = function(req, res) {
 		switch(path) {
 			case "/":
 			case "/home":
-				fs.readFile("public/home.html", "binary", function(err, file) {
+				if (session.user) {
+					fs.readFile("public/home.html", "binary", function(err, file) {
+						res.writeHeader(200);
+						res.write(file, "binary");
+						res.end();
+					});
+                    break;
+				}
+			case "/login":
+				fs.readFile("public/login.html", "binary", function(err, file) {
 					res.writeHeader(200);
 					res.write(file, "binary");
 					res.end();
 				});
 				break;
-			case "/login": require('./controllers/login').get(req, res); break;
-			case "/addStudent": require('./controllers/insert-student-mongo.js').get(req, res); break;
+			case "/add-member":
+				fs.readFile("public/addmember.html", "binary", function(err, file) {
+					res.writeHeader(200);
+					res.write(file, "binary");
+					res.end();
+				});
+				break;
+			case "/insert-student": require('./controllers/insert-student-mongo.js').get(req, res); break;
+			case "/members": require('./controllers/members-mongo.js').get(req, res); break;
 			case "/events": require('./controllers/event-mongo.js').get(req, res); break;
-			case "/favicon.ico": app.get('/favicon.ico', function(req, res) {res.status(204);}); break; // Get a favicon
+			case "/favicon.ico": app.get('/favicon.ico', function(req, res) {res.status(204);}); break; // Set a favicon at some point.
+			case "/submit-login": require('./scripts/login.js').get(req, res); break;
+			case "/logout": require('./scripts/logout.js').get(req, res); break;
 			default: require('./controllers/404').get(req, res); break;
-		}
+        }
 	}
 };

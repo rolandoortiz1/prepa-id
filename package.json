@@ -4,6 +4,7 @@
   "main": "router.js",
   "dependencies": {
     "express": "^4.15.3",
+    "express-session": "^1.15.4",
     "mongodb": "^2.2.30"
   },
   "devDependencies": {},

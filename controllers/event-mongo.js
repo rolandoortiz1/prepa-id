@@ -1,14 +1,34 @@
 var template = require('../views/events-template');
-var data = require('../model/mongo-data');
+var mongo = require('../model/mongo-data');
+var qs = require('querystring');
 exports.get = function(req, res) {
-	// data.insertStudent({"id": 0, "name": "Test Testerson", "major": "ICOM"});
-	data.eventList(function(err, eventList) {
+	if (req.method == "POST") {
+		var body = "";
+		req.on("data", function(data) {
+			body += data;
+
+			// If there's too much POST data, close the connection.
+			// if (body.length > 1e6) {
+			// 	request.connection.destroy();
+			// }
+		});
+
+		req.on("end", function() {
+			var post = qs.parse(body);
+			mongo.insertScan(function(){}, post["event"], post["studentID"]);
+		});
+	}
+
+	// var testid = {"id": 0, "name": "Test Testerson", "major": "ICOM"};
+	// console.log("test: " + JSON.stringify(testid));
+	// mongo.insertStudent(function(){}, testid);
+	mongo.eventList(function(err, eventList) {
 		if (!err) {
-			var eventsByDay = {};
+			// var eventsByDay = {};
 			var responseByDay = [];
 			var response = "";
 			var day;
-			eventList = eventList.events;
+			eventList = eventList.results;
 			for (var i = 0; i < eventList.length; i++) {
 				day = eventList[i].day;
 				// if (!eventsByDay.hasOwnProperty("day" + day))
@@ -24,12 +44,12 @@ exports.get = function(req, res) {
 				response += responseByDay[key] + "</div>";
 
 			res.writeHead(200, {'Content-Type': 'text/html'});
-			res.write(template.build(response));
+			res.write(template.build(response + '<input type="submit" value="Submit">'));
 			res.end();
 		}
 		else {
 			res.writeHead(200, {'Content-Type': 'text/html'});
-			res.write(template.build("Oh dear", "Database error", "<p>Error details: " + err + "</p>"));
+			res.write(template.build("<p>Error details: " + err + "</p>"));
 			res.end();
 		}
 	});
