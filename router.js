@@ -8,6 +8,7 @@ const path = require('path'),
 exports.get = function(req, res) {
 	req.requrl = url.parse(req.url, true);
 	var path = req.requrl.pathname;
+	console.log("Getting: " + __dirname + path);
 	if (/.(css)$/.test(path)) {
 		res.writeHead(200, {'Content-Type': 'text/css'});
 		fs.readFile(__dirname + path, 'utf8', function(err, data) {
@@ -58,6 +59,20 @@ exports.get = function(req, res) {
 			case "/favicon.ico": app.get('/favicon.ico', function(req, res) {res.status(204);}); break; // Set a favicon at some point.
 			case "/submit-login": require('./scripts/login.js').get(req, res); break;
 			case "/logout": require('./scripts/logout.js').get(req, res); break;
+			case "/lib/llqrcode.js":
+				res.writeHead(200, {'Content-type': 'text/javascript'});
+				fs.readFile(__dirname + path, 'utf8', function(err, file) {
+					if (err) throw err;
+					res.end(file, 'utf8');
+				});
+				break;
+			case "/lib/webqr.js":
+				res.writeHead(200, {'Content-type': 'text/javascript'});
+				fs.readFile(__dirname + path, 'utf8', function(err, file) {
+					if (err) throw err;
+					res.end(file, 'utf8');
+				});
+				break;
 			default: require('./controllers/404').get(req, res); break;
         }
 	}

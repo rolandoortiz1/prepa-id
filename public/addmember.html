@@ -3,6 +3,13 @@
 	<head>
 		<title>Add Member</title>
 		<link href="/assets/style.css" rel="stylesheet">
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		
+		<!--scripts !!! -->
+		<script type="text/javascript" charset="utf-8" src="lib/llqrcode.js"></script>
+		<!-- <script type="text/javascript">load();</script> -->
+
+		<script type="text/javascript" charset="utf-8" src="lib/webqr.js"></script>
 	</head>
 	<body>
 		<div>
@@ -20,6 +27,50 @@
 					<input type="radio" name="department" value="ICOM">ICOM<br>
 					<input type="radio" name="department" value="INSO">INSO<br>
 					<input type="radio" name="department" value="CIIC">CIIC<br>
+				</div>
+				<div name="QR_read_ID">
+											<div class="row">
+
+							  <div id="test1" class="col s12">
+								<div class="container">
+								  <div class="row">
+									<div style="margin: 0 auto; text-align: center; width: 500px" class="z-depth-2">
+									  <div id="mainbody" style="display: inline;">
+
+									  <td><img class="selector" id="webcamimg" onclick="setwebcam()" align="left" style="opacity: 1;"></td>
+									  <td><img class="selector" id="qrimg" onclick="setimg()" align="right" style="opacity: 0.2;"></td></tr>
+									  <tr><td colspan="2" align="center">
+									  <div id="outdiv" style="margin-top: 15px; padding: 10px; margin-left: 0px;"><video id="v" autoplay=""></video></div></td></tr>
+									  </tbody></table>
+									  </td>
+									  </tr>
+									  <tr><td colspan="3" align="center">
+
+										<h2>Scann Student QR-code</h2>
+									  </td></tr>
+									  <tr><td colspan="3" align="center">
+									  <div style="text-align:  right; margin-right: 10px;">
+										<a class="waves-effect waves-light btn blue" onclick="load();"><i class="material-icons left">play_circle_outline</i>play</a>
+										<a class="waves-effect waves-light btn red" onclick="stop();"><i class="material-icons left">not_interested</i>stop</a>
+									  </div>
+									  <div class="card-panel grey lighten-5 z-depth-1">
+
+									  <div id="mapo" style="padding-top: 10px;">&nbsp;</div>
+									  <button>Next</button>
+
+								  </div>
+
+
+									  <canvas id="canvas" width="470" height="353"></canvas>
+
+
+									</div>
+
+								  </div>
+								</div>
+							  </div>
+
+							</div>
 				</div>
 			</div>
             <input type="submit" value="Add Member">
