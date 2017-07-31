@@ -1,15 +1,15 @@
-exports.build = function(memberArea) {
+exports.build = function(eventTableArea) {
 	return [
 	'<!DOCTYPE html>',
 		'<html>',
 			'<head>',
-				'<title>Group Members</title>',
+				'<title>Event Attendance</title>',
 				'<link rel="stylesheet" href="/assets/style.css"/>',
 			'</head>',
 			'<body>',
-				'<h1>Group Members<img src="/assets/images/logo_team_made.png" alt="Team MADE" align="top" height="125" width="100"/></h1>',
+				'<h1>Event Attendance<img src="/assets/images/logo_team_made.png" alt="Team MADE" align="top" height="125" width="100"/></h1>',
 				'<center>',
-					'<div id="tableArea">{memberArea}</div>',
+					'<div id="tableArea">{eventTableArea}</div><a href="/home">Home</a>',
 				'</center>',
 				'<style>',
 					'table {',
@@ -37,5 +37,5 @@ exports.build = function(memberArea) {
 			'</body>',
 		'</html>']
 	.join('')
-	.replace(/{memberArea}/g, memberArea);
+	.replace(/{eventTableArea}/g, eventTableArea);
 };

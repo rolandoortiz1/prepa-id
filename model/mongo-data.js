@@ -81,16 +81,16 @@ exports.eventList = function(callback) {
 exports.insertStudent = function(callback, studentObj) {
 	var database = new DB;
 	var student = studentObj;
-	console.log("Object: " + JSON.stringify(studentObj) + "\tVariable: " + JSON.stringify(student));
+//	console.log("Object: " + JSON.stringify(studentObj) + "\tVariable: " + JSON.stringify(student));
 	database.connect("mongodb://" + host + ":" + port + "/" + useDB)
 	.then(
 		function() { // On successful connection
-			console.log("Object in .then(): " + JSON.stringify(studentObj));
+//			console.log("Object in .then(): " + JSON.stringify(studentObj));
 			return database.addDocument("students", studentObj)
 			.then(
 				function() {
 					database.close();
-					console.log("Student Successfully inserted.");
+					console.log("Student successfully inserted.");
 				},
 				function(error) {
 					database.close();
@@ -183,7 +183,8 @@ exports.insertScan = function(callback, event, studentID) {
 			// );
 			studentID = parseInt(studentID);
 			var object = {};
-			object[event] = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+//			object[event] = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+			object[event] = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "T" + date.getHours() + ":" + date.getMinutes() + ":00";
 			return database.setNewFields("students", {"id": studentID}, object)
 			.then(
 				function() {
@@ -224,6 +225,37 @@ exports.studentList = function(callback) {
 				function(error) {
 					database.close();
 					console.log("Failed to find students: " + error);
+				}
+			);
+		},
+		function() {
+			database.close();
+			resultObject = {
+				"success": false,
+				"error": "Database connection error: " + error
+			}
+			// res.json(resultObject);
+			console.log(resultObject.error);
+			callback(resultObject.error)
+		}
+	);
+};
+
+exports.groupList = function(callback) {
+	var database = new DB;
+	database.connect("mongodb://" + host + ":" + port + "/" + useDB)
+	.then(
+		function() {
+			database.find("groups", {})
+			.then(
+				function(groups) {
+					database.close();
+					console.log("Successfully found groups.");
+					callback("", groups);
+				},
+				function(error) {
+					database.close();
+					console.log("Failed to find groups: " + error);
 				}
 			);
 		},

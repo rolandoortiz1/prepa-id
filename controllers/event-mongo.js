@@ -19,9 +19,6 @@ exports.get = function(req, res) {
 		});
 	}
 
-	// var testid = {"id": 0, "name": "Test Testerson", "major": "ICOM"};
-	// console.log("test: " + JSON.stringify(testid));
-	// mongo.insertStudent(function(){}, testid);
 	mongo.eventList(function(err, eventList) {
 		if (!err) {
 			// var eventsByDay = {};

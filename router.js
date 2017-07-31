@@ -3,22 +3,11 @@ const path = require('path'),
 	url = require('url'),
 	express = require('express'),
     session = require('express-session');
-	app = express(),
-
-// app.use(express.static(path.join(__dirname, "public"))); // Serve static files automatically.
-
-// app.get("/", function(req, res) {
-// 	fs.readFile("public/home.html", "binary", function(err, file) {
-// 		res.writeHeader(200);
-// 		res.write(file, "binary");
-// 		res.end();
-// 	});
-// });
+	app = express();
 
 exports.get = function(req, res) {
 	req.requrl = url.parse(req.url, true);
 	var path = req.requrl.pathname;
-//	console.log("Getting " + __dirname + path);
 	if (/.(css)$/.test(path)) {
 		res.writeHead(200, {'Content-Type': 'text/css'});
 		fs.readFile(__dirname + path, 'utf8', function(err, data) {
@@ -63,7 +52,9 @@ exports.get = function(req, res) {
 				break;
 			case "/insert-student": require('./controllers/insert-student-mongo.js').get(req, res); break;
 			case "/members": require('./controllers/members-mongo.js').get(req, res); break;
+			case "/edit-member/:id": require('./controllers/edit-members-mongo.js').get(req, res); break;
 			case "/events": require('./controllers/event-mongo.js').get(req, res); break;
+			case "/standings": require('./controllers/standings-mongo.js').get(req, res); break;
 			case "/favicon.ico": app.get('/favicon.ico', function(req, res) {res.status(204);}); break; // Set a favicon at some point.
 			case "/submit-login": require('./scripts/login.js').get(req, res); break;
 			case "/logout": require('./scripts/logout.js').get(req, res); break;
